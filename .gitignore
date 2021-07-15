@@ -1,0 +1,32 @@
+﻿# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Discord bot
+config.py
+*.db
+*.sqlite
+*.sqlite3
+*.log
+logs/
+data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Keys
+*.key
+*.pem
+*.crt
+*.csr
