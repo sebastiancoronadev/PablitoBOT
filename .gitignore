@@ -1,5 +1,4 @@
-﻿# Python
-__pycache__/
+﻿__pycache__/
 *.pyc
 *.pyo
 *.pyd
@@ -9,8 +8,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
-# Discord bot
 config.py
 *.db
 *.sqlite
@@ -18,14 +15,10 @@ config.py
 *.log
 logs/
 data/
-
-# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# Keys
 *.key
 *.pem
 *.crt
