@@ -3,12 +3,14 @@ from discord.ext import commands
 import sqlite3
 import datetime
 
+# Cog para canales temporales
 class TempChannelsCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db_path = bot.db_path
         self.temp_channels = {}
 
+    # Evento para crear/eliminar canales temporales
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if after.channel:
@@ -19,6 +21,7 @@ class TempChannelsCog(commands.Cog):
             if len(before.channel.members) == 0:
                 await self.delete_temp_channel(before.channel)
 
+    # Crear canal temporal
     async def create_temp_channel(self, member, category):
         channel_name = f"Sala de {member.display_name}"
         channel = await member.guild.create_voice_channel(channel_name, category=category)
@@ -30,6 +33,7 @@ class TempChannelsCog(commands.Cog):
         self.temp_channels[channel.id] = member.id
         await member.move_to(channel)
 
+    # Eliminar canal temporal
     async def delete_temp_channel(self, channel):
         channel_id = channel.id
         conn = sqlite3.connect(self.db_path)
@@ -41,6 +45,7 @@ class TempChannelsCog(commands.Cog):
             del self.temp_channels[channel_id]
         await channel.delete()
 
+    # Bloquear canal
     @commands.command(name='lock')
     async def lock_command(self, ctx):
         channel = ctx.author.voice.channel if ctx.author.voice else None
@@ -58,6 +63,7 @@ class TempChannelsCog(commands.Cog):
         await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
         await ctx.send(f"Canal {channel.name} bloqueado.")
 
+    # Desbloquear canal
     @commands.command(name='unlock')
     async def unlock_command(self, ctx):
         channel = ctx.author.voice.channel if ctx.author.voice else None
@@ -75,6 +81,7 @@ class TempChannelsCog(commands.Cog):
         await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
         await ctx.send(f"Canal {channel.name} desbloqueado.")
 
+    # Cambiar limite del canal
     @commands.command(name='limit')
     async def limit_command(self, ctx, limit: int):
         channel = ctx.author.voice.channel if ctx.author.voice else None

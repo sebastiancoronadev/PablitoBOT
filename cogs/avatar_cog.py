@@ -3,11 +3,13 @@ from discord.ext import commands
 import sqlite3
 import datetime
 
+# Cog para avatares y banners
 class AvatarCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db_path = bot.db_path
 
+    # Comando para ver avatar
     @commands.command(name='avatar')
     async def avatar_command(self, ctx, member: discord.Member = None):
         if member is None:
@@ -17,6 +19,7 @@ class AvatarCog(commands.Cog):
         embed.set_image(url=avatar_url)
         await ctx.send(embed=embed)
 
+    # Comando para ver banner
     @commands.command(name='banner')
     async def banner_command(self, ctx, member: discord.Member = None):
         if member is None:

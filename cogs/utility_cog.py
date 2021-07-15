@@ -7,11 +7,13 @@ import requests
 import socket
 import re
 
+# Cog de utilidades
 class UtilityCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db_path = bot.db_path
 
+    # Comando de ayuda
     @commands.command(name='help')
     async def help_command(self, ctx):
         embed = discord.Embed(title="Comandos de PablitoBOT", color=discord.Color.blue())
@@ -21,12 +23,14 @@ class UtilityCog(commands.Cog):
         embed.add_field(name="Utilidades", value="!poll, !remind, !ping, !serverinfo, !userinfo, !hash, !ip", inline=False)
         await ctx.send(embed=embed)
 
+    # Comando de ping
     @commands.command(name='ping')
     async def ping_command(self, ctx):
         latency = round(self.bot.latency * 1000)
         embed = discord.Embed(title="Pong!", description=f"Latencia: **{latency}ms**", color=discord.Color.green())
         await ctx.send(embed=embed)
 
+    # Crear encuesta
     @commands.command(name='poll')
     async def poll_command(self, ctx, *, poll_data: str):
         parts = [p.strip() for p in poll_data.split('|')]
@@ -48,6 +52,7 @@ class UtilityCog(commands.Cog):
         for i in range(len(options)):
             await message.add_reaction(emojis[i])
 
+    # Informacion del servidor
     @commands.command(name='serverinfo')
     async def serverinfo_command(self, ctx):
         guild = ctx.guild
@@ -61,6 +66,7 @@ class UtilityCog(commands.Cog):
         embed.add_field(name="Roles", value=len(guild.roles), inline=True)
         await ctx.send(embed=embed)
 
+    # Informacion del usuario
     @commands.command(name='userinfo')
     async def userinfo_command(self, ctx, member: discord.Member = None):
         if member is None:

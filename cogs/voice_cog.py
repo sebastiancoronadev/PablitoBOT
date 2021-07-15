@@ -3,12 +3,14 @@ from discord.ext import commands
 import sqlite3
 import datetime
 
+# Cog para estadisticas de voz
 class VoiceCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db_path = bot.db_path
         self.voice_sessions = {}
 
+    # Evento para detectar entrada/salida de canales de voz
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         if before.channel != after.channel:
@@ -17,6 +19,7 @@ class VoiceCog(commands.Cog):
             if after.channel:
                 await self.start_voice_session(member.id, after.channel.guild.id, after.channel.id)
 
+    # Iniciar sesion de voz
     async def start_voice_session(self, user_id, guild_id, channel_id):
         current_time = datetime.datetime.utcnow()
         self.voice_sessions[user_id] = (guild_id, channel_id, current_time)
@@ -27,6 +30,7 @@ class VoiceCog(commands.Cog):
         conn.commit()
         conn.close()
 
+    # Terminar sesion de voz
     async def end_voice_session(self, user_id, guild_id):
         if user_id not in self.voice_sessions:
             return
@@ -43,6 +47,7 @@ class VoiceCog(commands.Cog):
         conn.close()
         del self.voice_sessions[user_id]
 
+    # Ver estadisticas de voz de un usuario
     @commands.command(name='voicestats')
     async def voice_stats_command(self, ctx, member: discord.Member = None):
         if member is None:
@@ -62,6 +67,7 @@ class VoiceCog(commands.Cog):
         embed.add_field(name="Semanal", value=f"{int(weekly_sec)}s", inline=True)
         await ctx.send(embed=embed)
 
+    # Ranking de actividad en voz
     @commands.command(name='voicetop')
     async def voice_top_command(self, ctx, limit: int = 10):
         if limit > 20:
